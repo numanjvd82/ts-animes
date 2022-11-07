@@ -16,6 +16,7 @@ export type Anime = {
     };
     averageRating: string;
   };
+  youtubeVideoId: string;
 };
 
 type AnimeState = {
@@ -52,6 +53,7 @@ export const fetchAnimes = createAsyncThunk<Anime[]>(
             },
             averageRating: anime.attributes.averageRating,
           },
+          youtubeVideoId: anime.youtubeVideoId,
         };
       });
       return customData;
