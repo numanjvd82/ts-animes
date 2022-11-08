@@ -3,7 +3,7 @@ import { Anime as AnimeType } from '../../slices/animeSlice';
 function Anime({ anime }: { anime: AnimeType }) {
   const { attributes } = anime;
   return (
-    <section className=" bg-white m-4 relative rounded-t-md rounded-b-md w-[250px]">
+    <section className=" bg-white m-4 relative rounded-t-md rounded-b-md w-[350px] md:w-[250px]">
       <article className="">
         <figure className=" cursor-pointer object-cover">
           <img

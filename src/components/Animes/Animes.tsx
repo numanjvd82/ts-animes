@@ -16,8 +16,8 @@ function Animes() {
   console.log(animes);
 
   return (
-    <section className="max-w-[1500px] mx-auto">
-      <section className="flex flex-wrap">
+    <section className="md:max-w-[1500px] mx-auto">
+      <section className="md:flex md:flex-wrap">
         {animes.loading === 'pending' && <Loader />}
         {animes.loading === 'failed' && <h1>Failed to load</h1>}
         {animes.loading === 'success' &&
