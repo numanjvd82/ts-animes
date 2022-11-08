@@ -5,7 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 
 function App() {
   return (
-    <div className="bg-blue-300 h-screen">
+    <div className="bg-blue-300">
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route path="/" element={<Animes />} />
