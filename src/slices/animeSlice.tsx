@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
+const baseUrl = 'https://kitsu.io/api/edge/anime';
+
 export type Anime = {
   id: string;
   attributes: {
@@ -31,11 +33,13 @@ const initialState: AnimeState = {
   error: null,
 };
 
-export const fetchAnimes = createAsyncThunk<Anime[]>(
+export const fetchAnimes = createAsyncThunk(
   'animes/fetchAll',
-  async (): Promise<Anime[]> => {
+  async (offset: number = 0): Promise<Anime[]> => {
     try {
-      const response = await fetch('https://kitsu.io/api/edge/anime');
+      const response = await fetch(
+        `${baseUrl}?page[limit]=10&page[offset]=${offset}`
+      );
       const data = await response.json();
       const customData: Anime[] = data.data.map((anime: Anime) => {
         return {
@@ -74,9 +78,26 @@ export const animeSlice = createSlice({
     });
     builder.addCase(
       fetchAnimes.fulfilled,
-      (state, action: PayloadAction<Anime[]>) => {
+      (
+        state,
+        action: PayloadAction<
+          Anime[],
+          string,
+          {
+            arg?: number;
+            requestId: string;
+            requestStatus: 'fulfilled';
+          }
+        >
+      ) => {
         state.loading = 'success';
-        state.animes = action.payload;
+        if (action.meta.arg === 0) {
+          state.animes = action.payload;
+        }
+
+        if (action.meta.arg! > 0) {
+          state.animes = state.animes.concat(action.payload);
+        }
       }
     );
     builder.addCase(fetchAnimes.rejected, (state) => {
