@@ -1,19 +1,22 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { selectAnimes, fetchAnimes } from '../../slices/animeSlice';
 
 import Loader from '../Loader/Loader';
 import Anime from '../Anime/Anime';
+import useScroll from '../../hooks/useScroll';
 
 function Animes() {
+  const scroll = useScroll();
+  console.log(scroll);
   const animes = useAppSelector(selectAnimes);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchAnimes());
-  }, []);
+  const [offset, setOffset] = useState(0);
 
-  console.log(animes);
+  useEffect(() => {
+    dispatch(fetchAnimes(offset));
+  }, [offset]);
 
   return (
     <section className="md:max-w-[1500px] mx-auto">

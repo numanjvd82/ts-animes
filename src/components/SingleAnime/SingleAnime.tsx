@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import { selectAnimes } from '../../slices/animeSlice';
 
 function SingleAnime() {
