@@ -21,15 +21,23 @@ function Animes() {
   ) : null;
 
   return (
-    <section id="top" className="md:max-w-[1500px] mx-auto">
+    <>
       {animes.loading === 'pending' && <Loader />}
-      <section className="md:flex md:flex-wrap">
-        {animes.loading === 'failed' && <h1>Failed to load</h1>}
-        {animes.loading === 'success' &&
-          animes.animes.map((anime) => <Anime key={anime.id} anime={anime} />)}
+      <section id="top" className="md:max-w-[1500px] mx-auto">
+        {animes.loading === 'failed' && (
+          <h1 className="text-3xl text-white my-2 bg-blue-500 p-2 rounded-md">
+            Failed to load
+          </h1>
+        )}
+        <section className="md:flex md:flex-wrap  sm:justify-center">
+          {animes.loading === 'success' &&
+            animes.animes.map((anime, index) => (
+              <Anime key={index} anime={anime} />
+            ))}
+        </section>
+        {noMore}
       </section>
-      {noMore}
-    </section>
+    </>
   );
 }
 
