@@ -27,6 +27,16 @@ type AnimeState = {
   error: null;
 };
 
+type PayloadActionType = PayloadAction<
+  Anime[],
+  string,
+  {
+    arg?: number;
+    requestId: string;
+    requestStatus: 'fulfilled';
+  }
+>;
+
 const initialState: AnimeState = {
   animes: [],
   loading: 'idle',
@@ -78,18 +88,7 @@ export const animeSlice = createSlice({
     });
     builder.addCase(
       fetchAnimes.fulfilled,
-      (
-        state,
-        action: PayloadAction<
-          Anime[],
-          string,
-          {
-            arg?: number;
-            requestId: string;
-            requestStatus: 'fulfilled';
-          }
-        >
-      ) => {
+      (state, action: PayloadActionType) => {
         state.loading = 'success';
         if (action.meta.arg === 0) {
           state.animes = action.payload;
