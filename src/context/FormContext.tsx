@@ -1,14 +1,19 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 
 type FormContextType = {
   email: string;
-  setEmail: (email: string) => void;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
   password: string;
-  setPassword: (password: string) => void;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  validEmail: boolean;
+  setValidEmail: React.Dispatch<React.SetStateAction<boolean>>;
+  validPassword: boolean;
+  setValidPassword: React.Dispatch<React.SetStateAction<boolean>>;
+  allValidate: boolean;
+  setAllValidate: React.Dispatch<React.SetStateAction<boolean>>;
   error: string;
-  setError: (error: string) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  inputRef: React.RefObject<HTMLInputElement>;
 };
 
 type FormContextProviderProps = {
@@ -19,9 +24,13 @@ const FormContext = createContext({} as FormContextType);
 
 export const FormContextProvider = ({ children }: FormContextProviderProps) => {
   const [email, setEmail] = useState('');
+  const [validEmail, setValidEmail] = useState(false);
   const [password, setPassword] = useState('');
+  const [validPassword, setValidPassword] = useState(false);
+  const [allValidate, setAllValidate] = useState(true);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <FormContext.Provider
@@ -30,10 +39,15 @@ export const FormContextProvider = ({ children }: FormContextProviderProps) => {
         setEmail,
         password,
         setPassword,
+        validEmail,
+        setValidEmail,
+        allValidate,
+        setAllValidate,
+        validPassword,
+        setValidPassword,
         error,
         setError,
-        loading,
-        setLoading,
+        inputRef,
       }}
     >
       {children}
