@@ -9,11 +9,10 @@ type FormContextType = {
   setValidEmail: React.Dispatch<React.SetStateAction<boolean>>;
   validPassword: boolean;
   setValidPassword: React.Dispatch<React.SetStateAction<boolean>>;
-  allValidate: boolean;
-  setAllValidate: React.Dispatch<React.SetStateAction<boolean>>;
   error: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
   inputRef: React.RefObject<HTMLInputElement>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
 type FormContextProviderProps = {
@@ -27,10 +26,17 @@ export const FormContextProvider = ({ children }: FormContextProviderProps) => {
   const [validEmail, setValidEmail] = useState(false);
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
-  const [allValidate, setAllValidate] = useState(true);
   const [error, setError] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validEmail || !validPassword) {
+      setError('Invalid email or password');
+    }
+    alert(`Form submitted ${email} ${password}`);
+  };
 
   return (
     <FormContext.Provider
@@ -41,13 +47,12 @@ export const FormContextProvider = ({ children }: FormContextProviderProps) => {
         setPassword,
         validEmail,
         setValidEmail,
-        allValidate,
-        setAllValidate,
         validPassword,
         setValidPassword,
         error,
         setError,
         inputRef,
+        handleSubmit,
       }}
     >
       {children}
