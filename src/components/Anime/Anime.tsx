@@ -1,18 +1,21 @@
 import { Anime as AnimeType } from '../../slices/animeSlice';
 import { Link } from 'react-router-dom';
+import { FaStar } from 'react-icons/fa';
 
 function Anime({ anime }: { anime: AnimeType }) {
   const { attributes } = anime;
   return (
     <section className=" bg-white m-4 rounded-t-md rounded-b-md w-[400px] md:w-[350px]">
       <article className="">
-        <figure className="overflow-hidden cursor-pointer object-cover">
+        <figure className="overflow-hidden cursor-pointer object-cover relative">
           <img
             src={attributes.posterImage.large}
             className="w-full h-[300px] rounded-t-md hover:opacity-80 hover:scale-125 transition duration-500 ease-in-out"
             alt={attributes.titles.en}
           />
-          <button>Add to favourites</button>
+          <button className="text-xl text-yellow-50 transition-all hover:text-2xl hover:text-yellow-200 absolute top-0 right-0 mx-2 my-1">
+            <FaStar />
+          </button>
         </figure>
         <article className="p-4 w-full h-full">
           <div>
