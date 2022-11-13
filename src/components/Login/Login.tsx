@@ -33,7 +33,6 @@ function Login() {
     if (!emailValid) {
       setValidEmail(false);
     }
-    console.log(emailValid);
   }, [email]);
 
   useEffect(() => {
@@ -71,12 +70,6 @@ function Login() {
             <input
               ref={inputRef}
               className={`inline-block w-full px-4 py-2  text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500
-               ${
-                 //  !validEmail
-                 //    ? 'invalid:bg-red-100 invalid:border-red-500 '
-                 //    : 'valid:bg-green-100 valid:border-green-500'
-                 ''
-               }
               `}
               type="email"
               placeholder="Your Email Address"
@@ -87,25 +80,19 @@ function Login() {
               }
             />
             <p
-              className={`inline-block p-1 font-semibold mt-1 rounded-md mb-4 text-sm text-gray-600 bg-red-200 ${
+              className={` p-1 font-semibold mt-1 rounded-md mb-4 text-sm text-gray-600 bg-red-200 ${
                 email && !validEmail ? 'visible' : 'hidden'
-              }`}
+              } 
+                
+                `}
             >
               Please enter a valid email address
             </p>
           </div>
           <div className="my-2">
             <input
-              className={`inline-block w-full px-4 py-2  text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500
+              className={`block md:inline-block w-full px-4 py-2  text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500
               
-              ${
-                // !validPassword
-                //   ? 'invalid:bg-red-100 invalid:border-red-500 '
-                //   : 'valid:bg-green-100 valid:border-green-500'
-                ''
-              }
-
-
               `}
               type="password"
               placeholder="Password"
