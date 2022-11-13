@@ -1,48 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchAnimes, selectAnimes } from '../slices/animeSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 
 const useAnimes = () => {
   const [offset, setOffset] = useState(0);
-  const [isBottom, setIsBottom] = useState(false);
-  const [limit, setLimit] = useState(10);
   const [hasMore, setHasMore] = useState(true);
   const animes = useAppSelector(selectAnimes);
   const dispatch = useAppDispatch();
 
-  const handleScroll = () => {
-    const scrollTop = document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight;
-
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setIsBottom(true);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const limit = 100;
 
   useEffect(() => {
     dispatch(fetchAnimes(offset));
-  }, []);
+  }, [offset]);
 
-  useEffect(() => {
-    if (isBottom) {
-      if (limit > 100) {
-        setHasMore(false);
+  const intObserver = useRef<IntersectionObserver | null>(null);
+  const lastAnimeRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (animes.loading === 'pending') {
         return;
       }
-      setOffset((prev) => prev + 10);
-      dispatch(fetchAnimes(offset));
-      setLimit((prev) => prev + 10);
-      setIsBottom(false);
-    }
-  }, [isBottom]);
 
-  return { animes, hasMore };
+      if (intObserver.current) intObserver.current.disconnect();
+
+      intObserver.current = new IntersectionObserver((anime) => {
+        if (anime[0].isIntersecting && hasMore === true) {
+          if (offset < limit) {
+            setOffset((prevOffset) => prevOffset + 10); // Ten animes per page
+          }
+          if (offset === limit) {
+            setHasMore(false);
+          }
+        }
+      });
+
+      if (node) intObserver.current.observe(node);
+    },
+    [hasMore, offset]
+  );
+
+  return { animes, hasMore, lastAnimeRef };
 };
 
 export default useAnimes;
